@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Router from './router'
+import router from './router'
 import App from './App.vue'
 import Vuetify from './plugins/vuetify';
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
@@ -24,7 +24,7 @@ firebase.initializeApp(fireConfig);
 
 new Vue({
     el: '#app',
-    router: Router,
+    router: router,
     Vuetify,
     VueFire,
     firebase,
