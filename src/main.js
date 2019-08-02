@@ -22,7 +22,16 @@ export const fireConfig = {
 
 firebase.initializeApp(fireConfig)
 
-
+router.beforeEach((to, from, next) => {
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    if (requiresAuth && !firebase.auth().currentUser) {
+        next('/sign-in');
+    } else if (requiresAuth && firebase.auth().currentUser) {
+        next();
+    } else {
+        next();
+    }
+});
 
 new Vue({
     el: '#app',

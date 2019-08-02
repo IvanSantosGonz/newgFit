@@ -8,11 +8,11 @@ import About from '../views/About'
 import NotFoundPage from '../views/NotFoundPage'
 
 const routes = [
-    {path: '/home', component: Home},
+    {path: '/home', component: Home, meta: {requiresAuth: true}},
     {path: '/about', component: About},
     {path: '/*', component: NotFoundPage}
 ];
 
 
 
-export default new VueRouter({routes});
+export default new VueRouter({routes,  mode: 'history'});

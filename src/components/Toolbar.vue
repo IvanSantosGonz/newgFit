@@ -41,6 +41,9 @@
             signInText: "SignIn",
             user: "null",
         }),
+        created() {
+            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        },
         methods: {
             googleLogin() {
                 const provider = new firebase.auth.GoogleAuthProvider()
@@ -61,13 +64,13 @@
                 }
                 else {
                     firebase.auth().signOut()
-                        .then( result => {
-                            console.log("signingOut => " + result)
-                            this.signInText = "SignIn"
-                            this.signedIn = false
-                            this.user = firebase.auth().currentUser
-                        }
-                    )
+                        .then(result => {
+                                console.log("signingOut => " + result)
+                                this.signInText = "SignIn"
+                                this.signedIn = false
+                                this.user = firebase.auth().currentUser
+                            }
+                        )
                 }
             },
         }
