@@ -1,15 +1,16 @@
 import Vue from 'vue'
 import router from './router'
 import App from './App.vue'
-import Vuetify from './plugins/vuetify';
+import vuetify from './plugins/vuetify';
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
-import VueFire from 'vuefire'
-import firebase from 'firebase/app'
+import firebase from 'firebase'
 import 'firebase/firestore'
 import firebaseConfig from '../.firebaseConfig.json'
 
-var fireConfig = {
+Vue.config.productionTip = false
+
+export const fireConfig = {
     apiKey: firebaseConfig.APIKEY,
     authDomain: firebaseConfig.AUTHDOMAIN,
     databaseURL: firebaseConfig.DATABASEURL,
@@ -19,14 +20,16 @@ var fireConfig = {
     appId: firebaseConfig.APPID
 };
 
-firebase.initializeApp(fireConfig);
+firebase.initializeApp(fireConfig)
+
 
 
 new Vue({
     el: '#app',
     router: router,
-    Vuetify,
-    VueFire,
-    firebase,
-    render: h => h(App)
-});
+    render: h => h(App),
+    vuetify,
+
+}).$mount('#app')
+
+

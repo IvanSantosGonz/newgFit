@@ -10,14 +10,16 @@
                 <v-toolbar-items>
                     <v-btn text to="/home">Home</v-btn>
                     <v-btn text to="/about">About</v-btn>
+                    <v-btn text v-on:click="googleLogin">{{signInText}}</v-btn>
+                    <v-btn text v-if="signedIn">{{user.displayName}}</v-btn>
 
-                    <v-avatar id="avatar"
+                    <v-avatar v-if="signedIn" id="avatar"
                               size="52px"
                               :color="color"
                               :tile="tile"
                     >
                         <img
-                                src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
+                                v-bind:src="user.photoURL"
                                 alt="Avatar"
                         >
                     </v-avatar>
@@ -30,18 +32,45 @@
 
 
 <script>
+    import firebase from 'firebase'
+
     export default {
 
         data: () => ({
-            tab: null,
-            items: [
-                'Home', 'About', 'videos', 'images', 'news',
-            ],
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-            tile: false,
-            color: 'grey lighten-4',
-            img: true
+            signedIn: false,
+            signInText: "SignIn",
+            user: "null",
         }),
+        methods: {
+            googleLogin() {
+                const provider = new firebase.auth.GoogleAuthProvider()
+                if (!this.signedIn) {
+                    firebase
+                        .auth()
+                        .signInWithPopup(provider)
+                        .then(result => {
+                            console.log('result -> ' + result.toString())
+                            this.$router.replace('about')
+                            this.signInText = "SignOut"
+                            this.signedIn = true
+                            this.user = firebase.auth().currentUser
+                        })
+                        .catch(err => {
+                            alert('Oops. ' + err.message)
+                        })
+                }
+                else {
+                    firebase.auth().signOut()
+                        .then( result => {
+                            console.log("signingOut => " + result)
+                            this.signInText = "SignIn"
+                            this.signedIn = false
+                            this.user = firebase.auth().currentUser
+                        }
+                    )
+                }
+            },
+        }
     };
 
 </script>
