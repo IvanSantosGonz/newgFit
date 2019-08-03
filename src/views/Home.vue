@@ -1,7 +1,22 @@
 <template>
     <div class="container">
         <h2>Home</h2>
-        <HelloWorld msg="Welcome to Your Vue.js App"/>
+        <v-container grid-list-xl fluid>
+            <v-layout justify-center wrap>
+                <v-flex xs12 sm10 md6 lg4 xl3 >
+                    <FitDataCard></FitDataCard>
+                </v-flex>
+                <v-flex xs12 sm10 md6 lg4 xl3 >
+                    <FitDataCard></FitDataCard>
+                </v-flex>
+                <v-flex xs12 sm10 md6 lg4 xl3 >
+                    <FitDataCard></FitDataCard>
+                </v-flex>
+                <v-flex xs12 sm12 md6 lg4 xl3>
+                    <FitDataCard></FitDataCard>
+                </v-flex>
+            </v-layout>
+        </v-container>
 
     </div>
 
@@ -9,11 +24,13 @@
 
 <script>
     import HelloWorld from '../components/HelloWorld.vue'
+    import FitDataCard from '../components/FitDataCard.vue'
 
     export default {
         name: 'app',
         components: {
-            HelloWorld
+            HelloWorld,
+            FitDataCard
         }
     }
 </script>

@@ -40,6 +40,8 @@
             signedIn: false,
             signInText: "SignIn",
             user: "null",
+            tile: false,
+            color: 'grey lighten-4',
         }),
         created() {
             firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
