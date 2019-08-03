@@ -4,16 +4,16 @@
         <v-container grid-list-xl fluid>
             <v-layout justify-center wrap>
                 <v-flex xs12 sm10 md6 lg4 xl3 >
-                    <FitDataCard></FitDataCard>
+                    <fit-data-card></fit-data-card>
                 </v-flex>
                 <v-flex xs12 sm10 md6 lg4 xl3 >
-                    <FitDataCard></FitDataCard>
+                    <fit-data-card></fit-data-card>
                 </v-flex>
                 <v-flex xs12 sm10 md6 lg4 xl3 >
-                    <FitDataCard></FitDataCard>
+                    <fit-data-card></fit-data-card>
                 </v-flex>
                 <v-flex xs12 sm12 md6 lg4 xl3>
-                    <FitDataCard></FitDataCard>
+                    <fit-data-card></fit-data-card>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -30,7 +30,7 @@
         name: 'app',
         components: {
             HelloWorld,
-            FitDataCard
+            "fit-data-card" : FitDataCard
         }
     }
 </script>
