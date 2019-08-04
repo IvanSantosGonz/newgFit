@@ -11,30 +11,35 @@
             </v-list-item-content>
         </v-list-item>
 
-        <v-progress-circular
+        <v-progress-circular class="progress-circular"
                 :value="value"
                 color="teal"
                 rotate="270"
                 :size="size"
                 :width="width"
-        ><v-icon medium>{{this.icon}}</v-icon> <br>{{this.progressTitle}}</v-progress-circular>
+        > <span class="progress-circular-title">12.548 </span><br><span class="progress-circular-subtitle">{{this.progressTitle}}</span></v-progress-circular>
 
 
         <!--<v-card-text>
             Visit ten places on our planet that are undergoing the biggest changes today.
         </v-card-text>-->
 
-        <v-card-actions class="text-md-center">
-            <v-chip-group class="text-md-center"
+        <v-card-actions>
+
+            <v-layout class="chip-group-layout"align-center justify-center>
+            <v-chip-group
                     v-model="selection"
                     active-class="teal"
                     mandatory
                     center-active
             >
+
                 <v-chip  v-for="size in sizes" :key="size" :value="size">
                     {{ size }}
                 </v-chip>
             </v-chip-group>
+
+            </v-layout>
         </v-card-actions>
     </v-card>
 </template>
@@ -80,16 +85,26 @@
 </script>
 
 <style scoped>
-    v-chip-group{
-        align-content: center;
+    .chip-group-layout{
+        padding: 5%;
     }
-
     .headline{
         text-align: left;
     }
 
     .subheadline{
         text-align: left;
+    }
+
+    .progress-circular-title{
+        font-size: x-large;
+        color: black;
+        font-weight: 600;
+    }
+
+    .progress-circular-subtitle{
+        font-size: larger;
+        color: darkslategray;
     }
 
 </style>
