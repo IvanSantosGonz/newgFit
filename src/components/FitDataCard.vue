@@ -4,10 +4,10 @@
             class="mx-auto"
     >
         <v-list-item>
-            <v-list-item-avatar color="grey"></v-list-item-avatar>
+            <v-list-item-avatar color="grey"><v-icon medium>{{this.icon}}</v-icon></v-list-item-avatar>
             <v-list-item-content>
-                <v-list-item-title class="headline">Steps of the day</v-list-item-title>
-                <v-list-item-subtitle>100 pasos para el objetivo</v-list-item-subtitle>
+                <v-list-item-title class="headline">{{this.title}}</v-list-item-title>
+                <v-list-item-subtitle>{{this.subtitle}}</v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
 
@@ -17,7 +17,7 @@
                 rotate="270"
                 :size="size"
                 :width="width"
-        >Steps</v-progress-circular>
+        ><v-icon medium>{{this.icon}}</v-icon> </br>{{this.progressTitle}}</v-progress-circular>
 
 
         <!--<v-card-text>
@@ -25,7 +25,7 @@
         </v-card-text>-->
 
         <v-card-actions>
-           
+
         </v-card-actions>
     </v-card>
 </template>
@@ -42,9 +42,10 @@
             value: 0,
             size: 150,
             width: 15,
-            title: "",
-            subtitle: "",
-            icon: "",
+            title: "Steps of the day",
+            subtitle: "100 pasos para el objetivo",
+            icon: "mdi-walk",
+            progressTitle: "Steps"
 
 
         }),
