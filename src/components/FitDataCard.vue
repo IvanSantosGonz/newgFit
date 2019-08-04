@@ -11,7 +11,13 @@
             </v-list-item-content>
         </v-list-item>
 
-        <apexchart width="350" type="radialBar" :options="chartOptions" :series="series"></apexchart>
+        <v-progress-circular
+                :value="value"
+                color="teal"
+                rotate="270"
+                :size="size"
+                :width="width"
+        >Steps</v-progress-circular>
 
 
         <!--<v-card-text>
@@ -19,25 +25,7 @@
         </v-card-text>-->
 
         <v-card-actions>
-            <v-btn
-                    text
-                    color="deep-purple accent-4"
-            >
-                Read
-            </v-btn>
-            <v-btn
-                    text
-                    color="deep-purple accent-4"
-            >
-                Bookmark
-            </v-btn>
-            <v-spacer></v-spacer>
-            <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-            </v-btn>
-            <v-btn icon>
-                <v-icon>mdi-share-variant</v-icon>
-            </v-btn>
+           
         </v-card-actions>
     </v-card>
 </template>
@@ -51,12 +39,26 @@
             "apexchart": VueApexCharts
         },
         data: () => ({
-            chartOptions: {
-                labels: ["Steps"],
-                colors: ['#2dfa00'],
-            },
-            series: [81],
+            value: 0,
+            size: 150,
+            width: 15,
+            title: "",
+            subtitle: "",
+            icon: "",
+
+
         }),
+        beforeDestroy () {
+            clearInterval(this.interval)
+        },
+        mounted () {
+            this.interval = setInterval(() => {
+                if (this.value === 100) {
+                    return (this.value = 0)
+                }
+                this.value += 10
+            }, 1000)
+        },
 
     }
 
