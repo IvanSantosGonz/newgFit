@@ -7,7 +7,7 @@
                     <fit-data-card></fit-data-card>
                 </v-flex>
                 <v-flex xs12 sm10 md6 lg4 xl3 >
-                    <fit-data-card></fit-data-card>
+                    <bar-data-card></bar-data-card>
                 </v-flex>
                 <v-flex xs12 sm10 md6 lg4 xl3 >
                     <fit-data-card></fit-data-card>
@@ -25,12 +25,15 @@
 <script>
     import HelloWorld from '../components/HelloWorld.vue'
     import FitDataCard from '../components/FitDataCard.vue'
+    import BarDataCard from '../components/BarDataCard.vue'
 
     export default {
         name: 'app',
         components: {
+            BarDataCard,
             HelloWorld,
-            "fit-data-card" : FitDataCard
+            "fit-data-card" : FitDataCard,
+            "bar-data-card" : BarDataCard
         }
     }
 </script>

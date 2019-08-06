@@ -58,7 +58,7 @@
             subtitle: "100 pasos para el objetivo",
             icon: "mdi-walk",
             progressTitle: "Steps",
-            selection: '08',
+            selection: 'Su',
             sizes: [
                 'M', 'T', 'W', 'Th', 'F', 'S', 'Su',
             ],
