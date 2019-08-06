@@ -10,6 +10,9 @@ import firebaseConfig from '../.firebaseConfig.json'
 
 Vue.config.productionTip = false
 
+Vue.prototype.$eventBus = new Vue(); // Global event bus
+
+
 export const fireConfig = {
     apiKey: firebaseConfig.APIKEY,
     authDomain: firebaseConfig.AUTHDOMAIN,

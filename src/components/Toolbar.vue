@@ -42,6 +42,7 @@
             user: "null",
             tile: false,
             color: 'grey lighten-4',
+            tempMessage: ""
         }),
         created() {
             firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
@@ -49,16 +50,23 @@
         methods: {
             googleLogin() {
                 const provider = new firebase.auth.GoogleAuthProvider()
+                provider.addScope('https://www.googleapis.com/auth/fitness.activity.read');
+                provider.addScope('https://www.googleapis.com/auth/fitness.activity.write');
+                provider.addScope('https://www.googleapis.com/auth/fitness.body.read');
+                provider.addScope('https://www.googleapis.com/auth/fitness.body.write');
+
                 if (!this.signedIn) {
                     firebase
                         .auth()
                         .signInWithPopup(provider)
                         .then(result => {
                             console.log('result -> ' + result.toString())
-                            this.$router.replace('about')
+                            this.$router.replace('home')
                             this.signInText = "SignOut"
                             this.signedIn = true
                             this.user = firebase.auth().currentUser
+                            console.log("token" + result.credential.accessToken);
+                            this.emitToken(result.credential.accessToken)
                         })
                         .catch(err => {
                             alert('Oops. ' + err.message)
@@ -75,6 +83,11 @@
                         )
                 }
             },
+            emitToken(token) {
+                this.$eventBus.$emit('emitAuthToken', token);
+
+            },
+
         }
     };
 

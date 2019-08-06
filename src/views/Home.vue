@@ -16,6 +16,8 @@
                     <fit-data-card></fit-data-card>
                 </v-flex>
             </v-layout>
+            <textarea>{{ result }}</textarea>
+
         </v-container>
 
     </div>
@@ -23,18 +25,45 @@
 </template>
 
 <script>
+    import axios from "axios";
+
     import HelloWorld from '../components/HelloWorld.vue'
     import FitDataCard from '../components/FitDataCard.vue'
     import BarDataCard from '../components/BarDataCard.vue'
 
     export default {
         name: 'app',
+        data: () => ({
+            result: "",
+        }),
         components: {
             BarDataCard,
             HelloWorld,
             "fit-data-card" : FitDataCard,
             "bar-data-card" : BarDataCard
+        },
+        mounted() {
+            this.$eventBus.$on('emitAuthToken', payload =>
+                this.getFitData(payload)
+            )
+        },
+        methods: {
+            getFitData(token){
+                axios({ headers: {
+                        Authorization: 'Bearer ' + token //the token is a variable which holds the token
+                    },method: "GET", "url": "https://www.googleapis.com/fitness/v1/users/me/sessions" }
+                ).then(result => {
+                    this.result = result;
+                }, error => {
+                    console.error(error);
+                });
+            }
+
+        },
+        beforeDestroy() {
+            this.$eventBus.$off('emitAuthToken');
         }
+
     }
 </script>
 

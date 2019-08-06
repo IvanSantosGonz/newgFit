@@ -8,6 +8,7 @@
             <v-content>
                 <router-view></router-view>
             </v-content>
+
         </div>
     </v-app>
 
@@ -20,7 +21,9 @@
     export default {
         name: 'app',
         components: {
-            "my-toolbar" : Toolbar
-        }
+            "my-toolbar": Toolbar
+        },
+
+
     }
 </script>
