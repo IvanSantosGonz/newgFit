@@ -45,12 +45,10 @@
 </template>
 
 <script>
-    import VueApexCharts from 'vue-apexcharts'
 
     export default {
-        name: 'fitDataCard',
+        name: 'barDataCard',
         components: {
-            "apexchart": VueApexCharts
         },
         data: () => ({
             value: 0,
