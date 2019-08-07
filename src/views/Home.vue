@@ -3,13 +3,13 @@
         <h2>Home</h2>
         <v-container grid-list-xl fluid>
             <v-layout justify-center wrap>
-                <v-flex xs12 sm10 md6 lg4 xl3 >
-                    <fit-data-card></fit-data-card>
+                <v-flex xs12 sm10 md6 lg4 xl3>
+                    <fit-data-card :steps="steps"></fit-data-card>
                 </v-flex>
-                <v-flex xs12 sm10 md6 lg4 xl3 >
+                <v-flex xs12 sm10 md6 lg4 xl3>
                     <bar-data-card></bar-data-card>
                 </v-flex>
-                <v-flex xs12 sm10 md6 lg4 xl3 >
+                <v-flex xs12 sm10 md6 lg4 xl3>
                     <fit-data-card></fit-data-card>
                 </v-flex>
                 <v-flex xs12 sm12 md6 lg4 xl3>
@@ -35,36 +35,64 @@
         name: 'app',
         data: () => ({
             result: "",
+            steps: 0,
         }),
         components: {
             BarDataCard,
             HelloWorld,
-            "fit-data-card" : FitDataCard,
-            "bar-data-card" : BarDataCard
+            "fit-data-card": FitDataCard,
+            "bar-data-card": BarDataCard
         },
         mounted() {
             this.$eventBus.$on('emitAuthToken', payload =>
-                this.getFitData(payload)
+                this.getTodaySteps(payload)
             )
         },
         methods: {
-            getFitData(token){
-                axios({ headers: {
-                        Authorization: 'Bearer ' + token //the token is a variable which holds the token
-                    },method: "GET", "url": "https://www.googleapis.com/fitness/v1/users/me/sessions" }
+            getFitData(token) {
+                axios({
+                        headers: {
+                            Authorization: 'Bearer ' + token //the token is a variable which holds the token
+                        }, method: "GET", "url": "https://www.googleapis.com/fitness/v1/users/me/sessions"
+                    }
                 ).then(result => {
                     this.result = result;
                 }, error => {
                     console.error(error);
                 });
+            },
+
+            getTodaySteps(token) {
+                axios({
+                    headers: {
+                        Authorization: 'Bearer ' + token //the token is a variable which holds the token
+                    }, method: 'post', url: 'https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate', data: {
+                        "aggregateBy": [{
+                            "dataTypeName": "com.google.step_count.delta",
+                            "dataSourceId": "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps"
+                        }],
+                        "bucketByTime": {"durationMillis": 86400000},//24 hours
+                        "startTimeMillis": 1565150400000,
+                        "endTimeMillis": Date.now()
+                    }
+                }).then(response => {
+                        console.log(response);
+                        //alert(response.data.bucket[0].dataset[0].point[0].value[0].intVal)
+                        this.steps = parseInt(response.data.bucket[0].dataset[0].point[0].value[0].intVal)
+                        alert(this.steps)
+                    },
+                error =>
+                    {
+                        console.log(error);
+                    })
+                }
+
+            },
+            beforeDestroy() {
+                this.$eventBus.$off('emitAuthToken');
             }
 
-        },
-        beforeDestroy() {
-            this.$eventBus.$off('emitAuthToken');
         }
-
-    }
 </script>
 
 <style>

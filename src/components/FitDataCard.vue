@@ -17,12 +17,8 @@
                 rotate="270"
                 :size="size"
                 :width="width"
-        > <span class="progress-circular-title">12.548 </span><br><span class="progress-circular-subtitle">{{this.progressTitle}}</span></v-progress-circular>
+        > <span class="progress-circular-title">{{steps}} </span><br><span class="progress-circular-subtitle">{{this.progressTitle}}</span></v-progress-circular>
 
-
-        <!--<v-card-text>
-            Visit ten places on our planet that are undergoing the biggest changes today.
-        </v-card-text>-->
 
         <v-card-actions>
 
@@ -47,7 +43,7 @@
 <script>
 
     export default {
-        name: 'barDataCard',
+        name: 'fitDataCard',
         components: {
         },
         data: () => ({
@@ -65,17 +61,10 @@
 
 
         }),
-        beforeDestroy () {
-            clearInterval(this.interval)
+        props: {
+          steps: 0
         },
-        mounted () {
-            this.interval = setInterval(() => {
-                if (this.value === 100) {
-                    return (this.value = 0)
-                }
-                this.value += 10
-            }, 1000)
-        },
+       
 
     }
 
