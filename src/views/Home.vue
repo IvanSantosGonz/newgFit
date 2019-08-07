@@ -72,20 +72,23 @@
                             "dataSourceId": "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps"
                         }],
                         "bucketByTime": {"durationMillis": 86400000},//24 hours
-                        "startTimeMillis": 1565150400000,
-                        "endTimeMillis": Date.now()
+                        "startTimeMillis": this.getStartOfDayMillis(),
+                        "endTimeMillis": new Date().getTime()
                     }
                 }).then(response => {
                         console.log(response);
-                        //alert(response.data.bucket[0].dataset[0].point[0].value[0].intVal)
                         this.steps = parseInt(response.data.bucket[0].dataset[0].point[0].value[0].intVal)
-                        alert(this.steps)
                     },
                 error =>
                     {
                         console.log(error);
                     })
-                }
+                },
+            getStartOfDayMillis(){
+                var now = new Date();
+                now.setUTCHours(0,0,0,0);
+                return now.getTime()
+            }
 
             },
             beforeDestroy() {
