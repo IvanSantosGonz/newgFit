@@ -4,7 +4,9 @@
             class="mx-auto"
     >
         <v-list-item>
-            <v-list-item-avatar color="teal"><v-icon medium color="black">{{this.icon}}</v-icon></v-list-item-avatar>
+            <v-list-item-avatar color="teal">
+                <v-icon medium color="black">{{this.icon}}</v-icon>
+            </v-list-item-avatar>
             <v-list-item-content>
                 <v-list-item-title class="headline">{{this.title}}</v-list-item-title>
                 <v-list-item-subtitle class="subheadline">{{this.subtitle}}</v-list-item-subtitle>
@@ -12,41 +14,48 @@
         </v-list-item>
 
         <v-progress-circular class="progress-circular"
-                :value="reachedGoal"
-                color="teal"
-                rotate="270"
-                :size="size"
-                :width="width"
-        > <span class="progress-circular-title">{{value}} </span><br><span class="progress-circular-subtitle">{{this.progressTitle}}</span></v-progress-circular>
+                             :value="reachedGoal"
+                             color="teal"
+                             rotate="270"
+                             :size="size"
+                             :width="width"
+        ><span class="progress-circular-title">{{value}} </span><br><span class="progress-circular-subtitle">{{this.progressTitle}}</span>
+        </v-progress-circular>
 
 
         <!--<v-card-text>
             Visit ten places on our planet that are undergoing the biggest changes today.
         </v-card-text>-->
         <v-divider class="my-2"></v-divider>
-        <v-text-field
-                v-model="goal"
-                label="Step Goal"
-                outlined
-                color="teal"
-                prepend-inner-icon="mdi-walk"
-        ></v-text-field>
+        <v-layout class="chip-group-layout" align-center justify-center>
+
+            <v-text-field
+                    v-model="goal"
+                    label="Step Goal"
+                    outlined
+                    color="teal"
+                    prepend-inner-icon="mdi-walk"
+                    hide-details=true
+                    type="number"
+
+            ></v-text-field>
+        </v-layout>
         <v-divider class="my-2"></v-divider>
 
         <v-card-actions>
 
-            <v-layout class="chip-group-layout"align-center justify-center>
-            <v-chip-group
-                    v-model="selection"
-                    active-class="teal"
-                    mandatory
-                    center-active
-            >
+            <v-layout class="chip-group-layout" align-center justify-center>
+                <v-chip-group
+                        v-model="selection"
+                        active-class="teal"
+                        mandatory
+                        center-active
+                >
 
-                <v-chip  v-for="size in sizes" :key="size" :value="size">
-                    {{ size }}
-                </v-chip>
-            </v-chip-group>
+                    <v-chip v-for="size in sizes" :key="size" :value="size">
+                        {{ size }}
+                    </v-chip>
+                </v-chip-group>
 
             </v-layout>
         </v-card-actions>
@@ -57,8 +66,7 @@
 
     export default {
         name: 'fitDataCard',
-        components: {
-        },
+        components: {},
 
         data: () => ({
             value: 8000,
@@ -88,24 +96,25 @@
 </script>
 
 <style scoped>
-    .chip-group-layout{
+    .chip-group-layout {
         padding: 5%;
     }
-    .headline{
+
+    .headline {
         text-align: left;
     }
 
-    .subheadline{
+    .subheadline {
         text-align: left;
     }
 
-    .progress-circular-title{
+    .progress-circular-title {
         font-size: x-large;
         color: black;
         font-weight: 600;
     }
 
-    .progress-circular-subtitle{
+    .progress-circular-subtitle {
         font-size: larger;
         color: darkslategray;
     }
