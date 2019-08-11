@@ -23,6 +23,15 @@
         <!--<v-card-text>
             Visit ten places on our planet that are undergoing the biggest changes today.
         </v-card-text>-->
+        <v-divider class="my-2"></v-divider>
+        <v-text-field
+                v-model="goal"
+                label="Step Goal"
+                outlined
+                color="teal"
+                prepend-inner-icon="mdi-walk"
+        ></v-text-field>
+        <v-divider class="my-2"></v-divider>
 
         <v-card-actions>
 
@@ -47,9 +56,10 @@
 <script>
 
     export default {
-        name: 'barDataCard',
+        name: 'fitDataCard',
         components: {
         },
+
         data: () => ({
             value: 0,
             size: 150,
@@ -59,6 +69,7 @@
             icon: "mdi-walk",
             progressTitle: "Steps",
             selection: 'Su',
+            goal: 12000,
             sizes: [
                 'M', 'T', 'W', 'Th', 'F', 'S', 'Su',
             ],
