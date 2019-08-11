@@ -12,12 +12,12 @@
         </v-list-item>
 
         <v-progress-circular class="progress-circular"
-                :value="value"
+                :value="reachedGoal"
                 color="teal"
                 rotate="270"
                 :size="size"
                 :width="width"
-        > <span class="progress-circular-title">12.548 </span><br><span class="progress-circular-subtitle">{{this.progressTitle}}</span></v-progress-circular>
+        > <span class="progress-circular-title">{{value}} </span><br><span class="progress-circular-subtitle">{{this.progressTitle}}</span></v-progress-circular>
 
 
         <!--<v-card-text>
@@ -69,23 +69,17 @@
             icon: "mdi-walk",
             progressTitle: "Steps",
             selection: 'Su',
-            goal: 12000,
+            goal: 10000,
+            reachedGoal: 0,
             sizes: [
                 'M', 'T', 'W', 'Th', 'F', 'S', 'Su',
             ],
 
 
         }),
-        beforeDestroy () {
-            clearInterval(this.interval)
-        },
+
         mounted () {
-            this.interval = setInterval(() => {
-                if (this.value === 100) {
-                    return (this.value = 0)
-                }
-                this.value += 10
-            }, 1000)
+            this.reachedGoal = this.value * 100 / this.goal
         },
 
     }
