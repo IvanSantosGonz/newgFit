@@ -61,7 +61,7 @@
         },
 
         data: () => ({
-            value: 0,
+            value: 8000,
             size: 150,
             width: 15,
             title: "Steps of the day",
@@ -70,17 +70,17 @@
             progressTitle: "Steps",
             selection: 'Su',
             goal: 10000,
-            reachedGoal: 0,
             sizes: [
                 'M', 'T', 'W', 'Th', 'F', 'S', 'Su',
             ],
 
 
         }),
-
-        mounted () {
-            this.reachedGoal = this.value * 100 / this.goal
-        },
+        computed: {
+            reachedGoal: function () {
+                return this.value * 100 / this.goal
+            }
+        }
 
     }
 
