@@ -16,7 +16,6 @@
                     <fit-data-card></fit-data-card>
                 </v-flex>
             </v-layout>
-            <textarea>{{ result }}</textarea>
 
         </v-container>
 
@@ -79,23 +78,23 @@
                         console.log(response);
                         this.steps = parseInt(response.data.bucket[0].dataset[0].point[0].value[0].intVal)
                     },
-                error =>
-                    {
+                    error => {
                         console.log(error);
                     })
-                },
-            getStartOfDayMillis(){
-                var now = new Date();
-                now.setUTCHours(0,0,0,0);
-                return now.getTime()
-            }
-
             },
-            beforeDestroy() {
-                this.$eventBus.$off('emitAuthToken');
-            }
+            getStartOfDayMillis() {
+                var now = new Date();
+                now.setUTCHours(0, 0, 0, 0);
+                return now.getTime()
+            },
 
+
+        },
+        beforeDestroy() {
+            this.$eventBus.$off('emitAuthToken');
         }
+
+    }
 </script>
 
 <style>

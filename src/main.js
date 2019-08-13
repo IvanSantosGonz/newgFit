@@ -13,6 +13,7 @@ Vue.config.productionTip = false
 Vue.prototype.$eventBus = new Vue(); // Global event bus
 
 
+
 export const fireConfig = {
     apiKey: firebaseConfig.APIKEY,
     authDomain: firebaseConfig.AUTHDOMAIN,
@@ -24,6 +25,9 @@ export const fireConfig = {
 };
 
 firebase.initializeApp(fireConfig)
+
+export const db = firebase.firestore()
+
 
 router.beforeEach((to, from, next) => {
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);

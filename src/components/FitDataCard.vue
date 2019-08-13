@@ -35,8 +35,9 @@
                     outlined
                     color="teal"
                     prepend-inner-icon="mdi-walk"
-                    hide-details=true
+                    hide-details
                     type="number"
+                    @blur="saveGoal('stepGoal', goal)"
 
             ></v-text-field>
         </v-layout>
@@ -64,6 +65,10 @@
 
 <script>
 
+    import {db} from "../main.js"
+    import firebase from 'firebase'
+
+
     export default {
         name: 'fitDataCard',
         components: {},
@@ -88,10 +93,34 @@
             reachedGoal: function () {
                 return this.value * 100 / this.goal
             }
+        },
+        methods: {
+            saveGoal(goalName, goalValue) {
+                const createdAt = new Date()
+                var userRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+
+                var goalData = {}
+                goalData[goalName] = goalValue
+
+                userRef.update(goalData);
+
+            },
+            getGoal(goalName) {
+                var userRef = db.collection('users').doc(firebase.auth().currentUser.uid);
+                var vm = this;
+                userRef.onSnapshot(function (doc) {
+                    var data = doc.data();
+                    vm.goal = data[goalName]
+                    console.log(vm.goal)
+                });
+            }
+        },
+
+        mounted: function () {
+            // `this` points to the vm instance
+            this.getGoal("stepGoal")
         }
-
     }
-
 
 </script>
 
