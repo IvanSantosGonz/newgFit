@@ -4,7 +4,7 @@
         <v-container grid-list-xl fluid>
             <v-layout justify-center wrap>
                 <v-flex xs12 sm10 md6 lg4 xl3>
-                    <fit-data-card :steps="steps"></fit-data-card>
+                    <fit-data-card :stepsLast7Days="stepsLast7Days"></fit-data-card>
                 </v-flex>
                 <v-flex xs12 sm10 md6 lg4 xl3>
                     <bar-data-card></bar-data-card>
@@ -34,8 +34,7 @@
         name: 'app',
         data: () => ({
             result: "",
-            steps: 0,
-            weekSteps: {},
+            stepsLast7Days: {},
         }),
         components: {
             BarDataCard,
@@ -91,10 +90,10 @@
                             console.log("today is ", date.getDay())
                             date.setDate(date.getDate() + i + 1 )
                             console.log("day = ", date.getDay())
-                            this.weekSteps[weekday[date.getDay()]] = parseInt(response.data.bucket[i].dataset[0].point[0].value[0].intVal)
+                            this.stepsLast7Days[weekday[date.getDay()]] = parseInt(response.data.bucket[i].dataset[0].point[0].value[0].intVal)
                         }
                         console.log(response);
-                        console.log(this.weekSteps);
+                        console.log(this.stepsLast7Days);
                     },
                     error => {
                         console.log(error);

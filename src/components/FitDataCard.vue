@@ -19,7 +19,7 @@
                              rotate="270"
                              :size="size"
                              :width="width"
-        ><span class="progress-circular-title">{{value}} </span><br><span class="progress-circular-subtitle">{{this.progressTitle}}</span>
+        ><span class="progress-circular-title">8000 </span><br><span class="progress-circular-subtitle">{{this.progressTitle}}</span>
         </v-progress-circular>
 
 
@@ -53,8 +53,8 @@
                         center-active
                 >
 
-                    <v-chip v-for="size in sizes" :key="size" :value="size">
-                        {{ size }}
+                    <v-chip v-for="(value, key) in stepsLast7Days" :key="key" :value="key">
+                        {{ key }}
                     </v-chip>
                 </v-chip-group>
 
@@ -72,7 +72,9 @@
     export default {
         name: 'fitDataCard',
         components: {},
-
+        props: {
+            stepsLast7Days: {},
+        },
         data: () => ({
             value: 8000,
             size: 150,
@@ -92,7 +94,12 @@
         computed: {
             reachedGoal: function () {
                 return this.value * 100 / this.goal
-            }
+            },
+            /*getLast7Days: function () {
+                var days = this.stepsLast7Days
+                //onsole.log("dyas " ,days.keys())
+                return days
+            },*/
         },
         methods: {
             saveGoal(goalName, goalValue) {
