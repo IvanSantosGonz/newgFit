@@ -66,7 +66,8 @@
                             this.signedIn = true
                             this.user = firebase.auth().currentUser
                             console.log("token" + result.credential.accessToken);
-                            this.emitToken(result.credential.accessToken)
+                            this.$store.commit('setAuthToken', result.credential.accessToken)
+
                         })
                         .catch(err => {
                             alert('Oops. ' + err.message)
@@ -83,10 +84,7 @@
                         )
                 }
             },
-            emitToken(token) {
-                this.$eventBus.$emit('emitAuthToken', token);
 
-            },
 
         }
     };

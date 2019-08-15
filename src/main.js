@@ -7,10 +7,10 @@ import '@mdi/font/css/materialdesignicons.css'
 import firebase from 'firebase'
 import 'firebase/firestore'
 import firebaseConfig from '../.firebaseConfig.json'
+import { store } from './store/store'
 
 Vue.config.productionTip = false
 
-Vue.prototype.$eventBus = new Vue(); // Global event bus
 
 
 
@@ -42,6 +42,7 @@ router.beforeEach((to, from, next) => {
 
 new Vue({
     el: '#app',
+    store,
     router: router,
     render: h => h(App),
     vuetify,

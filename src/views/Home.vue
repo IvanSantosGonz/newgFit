@@ -4,7 +4,7 @@
         <v-container grid-list-xl fluid>
             <v-layout justify-center wrap>
                 <v-flex xs12 sm10 md6 lg4 xl3>
-                    <fit-data-card :stepsLast7Days="stepsLast7Days"></fit-data-card>
+                    <fit-data-card type=steps></fit-data-card>
                 </v-flex>
                 <v-flex xs12 sm10 md6 lg4 xl3>
                     <bar-data-card></bar-data-card>
@@ -34,18 +34,13 @@
         name: 'app',
         data: () => ({
             result: "",
-            stepsLast7Days: {},
+            stepsLast7Days: {}
         }),
         components: {
             BarDataCard,
             HelloWorld,
             "fit-data-card": FitDataCard,
             "bar-data-card": BarDataCard
-        },
-        mounted() {
-            this.$eventBus.$on('emitAuthToken', payload =>
-                this.get7DaysSteps(payload)
-            )
         },
         methods: {
             getFitData(token) {
@@ -61,7 +56,8 @@
                 });
             },
 
-            get7DaysSteps(token) {
+            get7DaysSteps: function (token) {
+                console.log("on get7DaysSteps")
                 axios({
                     headers: {
                         Authorization: 'Bearer ' + token //the token is a variable which holds the token
@@ -87,13 +83,12 @@
 
                         for (var i = 0; i <= response.data.bucket.length - 1; i++) {
                             var date = new Date()
-                            console.log("today is ", date.getDay())
-                            date.setDate(date.getDate() + i + 1 )
-                            console.log("day = ", date.getDay())
+                            date.setDate(date.getDate() + i + 1)
                             this.stepsLast7Days[weekday[date.getDay()]] = parseInt(response.data.bucket[i].dataset[0].point[0].value[0].intVal)
                         }
                         console.log(response);
-                        console.log(this.stepsLast7Days);
+                        this.$store.commit('setStepsLast7Days', this.stepsLast7Days)
+
                     },
                     error => {
                         console.log(error);
@@ -113,9 +108,11 @@
 
 
         },
-        beforeDestroy() {
-            this.$eventBus.$off('emitAuthToken');
-        }
+        mounted() {
+            this.get7DaysSteps(this.$store.getters.authToken)
+        },
+
+
 
     }
 </script>

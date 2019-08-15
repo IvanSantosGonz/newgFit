@@ -19,7 +19,7 @@
                              rotate="270"
                              :size="size"
                              :width="width"
-        ><span class="progress-circular-title">8000 </span><br><span class="progress-circular-subtitle">{{this.progressTitle}}</span>
+        ><span class="progress-circular-title">{{setData}} </span><br><span class="progress-circular-subtitle">{{this.progressTitle}}</span>
         </v-progress-circular>
 
 
@@ -53,8 +53,8 @@
                         center-active
                 >
 
-                    <v-chip v-for="(value, key) in stepsLast7Days" :key="key" :value="key">
-                        {{ key }}
+                    <v-chip v-for="day in days" :key="day" :value="day">
+                        {{ day }}
                     </v-chip>
                 </v-chip-group>
 
@@ -73,7 +73,7 @@
         name: 'fitDataCard',
         components: {},
         props: {
-            stepsLast7Days: {},
+            type: "",
         },
         data: () => ({
             value: 8000,
@@ -85,9 +85,8 @@
             progressTitle: "Steps",
             selection: 'Su',
             goal: 10000,
-            sizes: [
-                'M', 'T', 'W', 'Th', 'F', 'S', 'Su',
-            ],
+            days: [],
+
 
 
         }),
@@ -95,37 +94,48 @@
             reachedGoal: function () {
                 return this.value * 100 / this.goal
             },
-            /*getLast7Days: function () {
-                var days = this.stepsLast7Days
-                //onsole.log("dyas " ,days.keys())
-                return days
-            },*/
+            setData: function(){
+                if (this.type == "steps") {
+                    var keys = Object.keys(this.$store.getters.stepsLast7Days)
+                    this.days = keys
+                    this.value = this.$store.getters.stepsLast7Days[this.selection]
+                    this.title = "Steps"
+                    this.subtitle = ((this.goal >= this.value) ? (this.goal - this.value).toString() + " steps for your goal" : "Goal reached");
+                    return this.value
+                }
+            }
+
         },
         methods: {
             saveGoal(goalName, goalValue) {
                 const createdAt = new Date()
                 var userRef = db.collection('users').doc(firebase.auth().currentUser.uid);
-
                 var goalData = {}
-                goalData[goalName] = goalValue
 
+                goalData[goalName] = goalValue
                 userRef.update(goalData);
 
             },
             getGoal(goalName) {
                 var userRef = db.collection('users').doc(firebase.auth().currentUser.uid);
-                var vm = this;
+                var self = this;
                 userRef.onSnapshot(function (doc) {
                     var data = doc.data();
-                    vm.goal = data[goalName]
-                    console.log(vm.goal)
+                    self.goal = data[goalName]
+                    console.log(self.goal)
                 });
-            }
+            },
+
         },
 
         mounted: function () {
             // `this` points to the vm instance
             this.getGoal("stepGoal")
+            this.setData
+
+            var keys = Object.keys(this.$store.getters.stepsLast7Days)
+            this.days = keys
+            this.selection = keys[keys.length - 1]
         }
     }
 
