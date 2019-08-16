@@ -57,7 +57,6 @@
             },
 
             get7DaysSteps: function (token) {
-                console.log("on get7DaysSteps")
                 axios({
                     headers: {
                         Authorization: 'Bearer ' + token //the token is a variable which holds the token
@@ -94,6 +93,41 @@
                         console.log(error);
                     })
             },
+
+            getTodayHeartRate: function (token) {
+                console.log("on getTodayHeartRate")
+                axios({
+                    headers: {
+                        Authorization: 'Bearer ' + token //the token is a variable which holds the token
+                    }, method: 'post', url: 'https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate', data: {
+                        "aggregateBy": [{
+                            "dataTypeName": "com.google.heart_rate.bpm",
+                            "dataSourceId": "derived:com.google.heart_rate.bpm:com.google.android.gms:merge_heart_rate_bpm"
+                        }],
+                        "bucketByTime": {"durationMillis": 3600000},//1 hour
+                        "startTimeMillis": this.getStartOfDayMillis(),
+                        "endTimeMillis": new Date().getTime()
+                    }
+                }).then(response => {
+                        var averageHeartRateDataByHour = {}
+                        for (var i = 0; i <= response.data.bucket.length - 1; i++) {
+                            var hourData = response.data.bucket[i].dataset[0].point[0]
+
+                            if (hourData != undefined) {
+                                averageHeartRateDataByHour[new Date(hourData.startTimeNanos / 1000)] = hourData.value[0].fpVal
+                                console.log("val ", hourData.value[0].fpVal)
+                                console.log("startTimeNanos ", hourData.startTimeNanos)
+                            }
+                        }
+                        //this.$store.commit('todayHeartRate', averageHeartRateDataByHour)
+                        // console.log("heart rate parsed data", averageHeartRateDataByHour)
+                    },
+                    error => {
+                        console.log(error);
+                    })
+            },
+
+
             getStartOfDayMillis() {
                 var now = new Date();
                 now.setUTCHours(0, 0, 0, 0);
@@ -110,8 +144,8 @@
         },
         mounted() {
             this.get7DaysSteps(this.$store.getters.authToken)
+            this.getTodayHeartRate(this.$store.getters.authToken)
         },
-
 
 
     }
