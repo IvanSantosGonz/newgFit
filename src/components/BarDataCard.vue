@@ -15,23 +15,23 @@
         <v-card-text class="pt-0">
             <v-container grid-list-xl fluid>
                 <v-layout align-center justify-center>
-                        <v-icon
-                                color="red lighten-2"
-                                class="mr-6"
-                                size="64"
-                        >
-                            mdi-heart-pulse
-                        </v-icon>
-                        <div class="title font-weight-light mb-2">
-                            User Registrations
-                        </div>
+                    <v-icon
+                            color="red lighten-2"
+                            class="mr-6"
+                            size="64"
+                    >
+                        mdi-heart-pulse
+                    </v-icon>
+                    <div class="title font-weight-light mb-2">
+                        {{title}}
+                    </div>
                 </v-layout>
                 <v-layout align-center justify-center>
                     <v-flex xs6 sm6 md6 lg6 xl6>
-                        <div class="title font-weight-light grey--text">Max DPI <br> 89</div>
+                        <div class="title font-weight-light grey--text">{{subtitle1Name}} <br> {{subtitle1Value}}</div>
                     </v-flex>
                     <v-flex xs6 sm6 md6 lg6 xl6>
-                        <div class="title font-weight-light grey--text">Average DPI <br> 89</div>
+                        <div class="title font-weight-light grey--text">{{subtitle2Name}} <br> {{subtitle2Value}}</div>
                     </v-flex>
                 </v-layout>
             </v-container>
@@ -58,7 +58,8 @@
             <v-divider class="my-2"></v-divider>
 
             <v-btn class="ma-2" tile outlined color="teal">
-                <v-icon left>mdi-timetable</v-icon> History
+                <v-icon left>mdi-timetable</v-icon>
+                History
             </v-btn>
         </v-card-text>
 
@@ -74,11 +75,16 @@
         components: {
             "apexchart": VueApexCharts
         },
+        props: {
+            type: ""
+        },
         data: () => ({
             title: "BPM",
+            subtitle1Name: "Max DPI",
+            subtitle1Value: "70",
+            subtitle2Name: "Min DPI",
+            subtitle1Value: "70",
             series: [{
-                name: 'series1',
-                data: [31, 40, 28, 51, 42, 109, 100]
 
             }],
             chartOptions: {
@@ -105,10 +111,7 @@
                 xaxis: {
                     type: 'datetime',
                     categories:
-                        ["2018-09-19T00:00:00", "2018-09-19T01:30:00", "2018-09-19T02:30:00",
-                            "2018-09-19T03:30:00", "2018-09-19T04:30:00", "2018-09-19T05:30:00",
-                            "2018-09-19T06:30:00"
-                        ],
+                        [],
 
                 },
                 tooltip: {
@@ -151,6 +154,50 @@
                     'M', 'T', 'W', 'Th', 'F', 'S', 'Su',
                 ],
         }),
+
+        computed: {
+            setData: function () {
+                if (this.type == "heartRate") {
+                    var keys = Object.keys(this.$store.getters.averageHeartRateDataByHour)
+                    var values = Object.values(this.$store.getters.averageHeartRateDataByHour)
+
+
+                    this.categories = keys
+                    console.log("cats ", this.categories)
+                    console.log("series ", values)
+
+                    this.series[0].data = values
+                    this.title = "Heart Rate Registrations"
+                    this.subtitle1Name = "Max BPM"
+                    this.subtitle1Value = "180"
+                    this.subtitle2Name = "Min BPM"
+                    this.subtitle2Value = "45"
+
+                    this.chartOptions = {
+                        ...this.chartOptions,
+                        ...{
+                            xaxis: {
+                                type: 'datetime',
+                                categories: keys,
+                            }
+                        }
+                    }
+                    this.series = [
+                        {
+                            name:"Average Heart Rate",
+                            data: values
+                        }
+                    ];
+
+
+                }
+            }
+
+        },
+        mounted: function () {
+            // `this` points to the vm instance
+            this.setData
+        }
     }
 
 

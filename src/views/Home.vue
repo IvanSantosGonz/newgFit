@@ -7,7 +7,7 @@
                     <fit-data-card type=steps></fit-data-card>
                 </v-flex>
                 <v-flex xs12 sm10 md6 lg4 xl3>
-                    <bar-data-card></bar-data-card>
+                    <bar-data-card type=heartRate></bar-data-card>
                 </v-flex>
                 <v-flex xs12 sm10 md6 lg4 xl3>
                     <fit-data-card></fit-data-card>
@@ -29,6 +29,8 @@
     import HelloWorld from '../components/HelloWorld.vue'
     import FitDataCard from '../components/FitDataCard.vue'
     import BarDataCard from '../components/BarDataCard.vue'
+
+    import moment from 'moment'
 
     export default {
         name: 'app',
@@ -114,12 +116,12 @@
                             var hourData = response.data.bucket[i].dataset[0].point[0]
 
                             if (hourData != undefined) {
-                                averageHeartRateDataByHour[new Date(hourData.startTimeNanos / 1000)] = hourData.value[0].fpVal
-                                console.log("val ", hourData.value[0].fpVal)
-                                console.log("startTimeNanos ", hourData.startTimeNanos)
+                                averageHeartRateDataByHour[moment(hourData.startTimeNanos / 1000000).format("YYYY-MM-DDTHH:mm:ss")] = Math.round(hourData.value[0].fpVal)
+                                console.log("val ", Math.round(hourData.value[0].fpVal))
+                                console.log("startTimeNanos ", moment(hourData.startTimeNanos / 1000000).format("YYYY-MM-DDTHH:mm:ss"))
                             }
                         }
-                        //this.$store.commit('todayHeartRate', averageHeartRateDataByHour)
+                        this.$store.commit('setAverageHeartRateDataByHour', averageHeartRateDataByHour)
                         // console.log("heart rate parsed data", averageHeartRateDataByHour)
                     },
                     error => {
