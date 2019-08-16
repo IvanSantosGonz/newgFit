@@ -144,9 +144,9 @@
 
 
         },
-        mounted() {
-            this.get7DaysSteps(this.$store.getters.authToken)
+        created() {
             this.getTodayHeartRate(this.$store.getters.authToken)
+            this.get7DaysSteps(this.$store.getters.authToken)
         },
 
 

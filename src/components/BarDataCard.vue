@@ -28,7 +28,7 @@
                 </v-layout>
                 <v-layout align-center justify-center>
                     <v-flex xs6 sm6 md6 lg6 xl6>
-                        <div class="title font-weight-light grey--text">{{subtitle1Name}} <br> {{subtitle1Value}}</div>
+                        <div class="title font-weight-light grey--text">{{subtitle1Name}} <br> {{setData}}</div>
                     </v-flex>
                     <v-flex xs6 sm6 md6 lg6 xl6>
                         <div class="title font-weight-light grey--text">{{subtitle2Name}} <br> {{subtitle2Value}}</div>
@@ -83,7 +83,7 @@
             subtitle1Name: "Max DPI",
             subtitle1Value: "70",
             subtitle2Name: "Min DPI",
-            subtitle1Value: "70",
+            subtitle2Value: "70",
             series: [{
 
             }],
@@ -166,7 +166,7 @@
                     console.log("cats ", this.categories)
                     console.log("series ", values)
 
-                    this.series[0].data = values
+
                     this.title = "Heart Rate Registrations"
                     this.subtitle1Name = "Max BPM"
                     this.subtitle1Value = "180"
@@ -191,11 +191,11 @@
 
 
                 }
+                return Math.max(...values)
             }
 
         },
         mounted: function () {
-            // `this` points to the vm instance
             this.setData
         }
     }
