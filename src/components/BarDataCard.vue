@@ -84,9 +84,7 @@
             subtitle1Value: "70",
             subtitle2Name: "Min DPI",
             subtitle2Value: "70",
-            series: [{
-
-            }],
+            series: [{}],
             chartOptions: {
                 grid: {
                     show: true,
@@ -151,11 +149,12 @@
             selection: 'Su',
             sizes:
                 [
-                    'M', 'T', 'W', 'Th', 'F', 'S', 'Su',
                 ],
         }),
 
         computed: {
+
+
             setData: function () {
                 if (this.type == "heartRate") {
                     var keys = Object.keys(this.$store.getters.averageHeartRateDataByHour)
@@ -184,19 +183,45 @@
                     }
                     this.series = [
                         {
-                            name:"Average Heart Rate",
+                            name: "Average Heart Rate",
                             data: values
                         }
                     ];
 
 
                 }
-                return Math.max(...values)
+
+                return Math.max(...values);
             }
 
         },
+        methods: {
+            setLast7Days: function () {
+                var weekdays = new Array(7);
+                weekday[0] = "Su";
+                weekday[1] = "M";
+                weekday[2] = "Tu";
+                weekday[3] = "W";
+                weekday[4] = "Th";
+                weekday[5] = "F";
+                weekday[6] = "Sa";
+                var days = [];
+
+                var j = 0
+                for (var i = 6; i >= 0; i--) {
+                    var date = new Date()
+                    date.setDate(date.getDate() - i )
+                    days[j] = weekday[date.getDay()]
+                    j++;
+                }
+                console.log("days", days);
+                return days;
+            }
+        },
         mounted: function () {
             this.setData
+            this.sizes = this.setLast7Days();
+
         }
     }
 
