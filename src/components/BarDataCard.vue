@@ -47,8 +47,8 @@
                             center-active
                     >
 
-                        <v-chip v-for="size in sizes" :key="size" :value="size">
-                            {{ size }}
+                        <v-chip v-for="day in days" :key="day" :value="day">
+                            {{ day }}
                         </v-chip>
                     </v-chip-group>
 
@@ -69,9 +69,11 @@
 
 <script>
     import VueApexCharts from 'vue-apexcharts'
+    import { timeUtils } from '../mixins/timeUtils'
 
     export default {
         name: 'barDataCard',
+        mixins: [timeUtils],
         components: {
             "apexchart": VueApexCharts
         },
@@ -147,7 +149,7 @@
 
             },
             selection: 'Su',
-            sizes:
+            days:
                 [
                 ],
         }),
@@ -197,30 +199,21 @@
         },
         methods: {
             setLast7Days: function () {
-                var weekdays = new Array(7);
-                weekdays[0] = "Su";
-                weekdays[1] = "M";
-                weekdays[2] = "Tu";
-                weekdays[3] = "W";
-                weekdays[4] = "Th";
-                weekdays[5] = "F";
-                weekdays[6] = "Sa";
-                var days = [];
-
+                var weekDays = this.getWeekDaysArray()
+                var days = []
                 var j = 0
                 for (var i = 6; i >= 0; i--) {
                     var date = new Date()
                     date.setDate(date.getDate() - i )
-                    days[j] = weekdays[date.getDay()]
+                    days[j] = weekDays[date.getDay()]
                     j++;
                 }
-                console.log("days", days);
                 return days;
             }
         },
         mounted: function () {
             this.setData
-            this.sizes = this.setLast7Days();
+            this.days = this.setLast7Days();
 
         }
     }
