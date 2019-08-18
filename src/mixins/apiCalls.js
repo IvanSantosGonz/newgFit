@@ -1,12 +1,15 @@
 import axios from "axios";
+import { timeUtils } from '../mixins/timeUtils'
 
 
 export const apiCalls = {
+    mixins: [timeUtils],
     data: () => ({
     }),
     created: function () {
         console.log("Im in the Mixin")
     },
+
     methods: {
         get7DaysSteps: function (token) {
             axios({
@@ -23,19 +26,13 @@ export const apiCalls = {
                 }
             }).then(response => {
                     //parseInt(response.data.bucket[0].dataset[0].point[0].value[0].intVal)
-                    var weekday = new Array(7);
-                    weekday[0] = "Su";
-                    weekday[1] = "M";
-                    weekday[2] = "Tu";
-                    weekday[3] = "W";
-                    weekday[4] = "Th";
-                    weekday[5] = "F";
-                    weekday[6] = "Sa";
+                    var weekDays = this.getWeekDaysArray()
+
                     var weekSteps = {}
                     for (var i = 0; i <= response.data.bucket.length - 1; i++) {
                         var date = new Date()
                         date.setDate(date.getDate() + i + 1)
-                        weekSteps[weekday[date.getDay()]] = parseInt(response.data.bucket[i].dataset[0].point[0].value[0].intVal)
+                        weekSteps[weekDays[date.getDay()]] = parseInt(response.data.bucket[i].dataset[0].point[0].value[0].intVal)
                     }
                     this.$store.commit('setStepsLast7Days', weekSteps)
 
@@ -45,18 +42,6 @@ export const apiCalls = {
                 })
         },
 
-
-        getStartOfDayMillis() {
-            var now = new Date();
-            now.setUTCHours(0, 0, 0, 0);
-            return now.getTime()
-        },
-        get7DaysBeforeTodayMillis() {
-            var now = new Date();
-            now.setDate(now.getDate() - 6)
-            now.setUTCHours(0, 0, 0, 0);
-            return now.getTime()
-        },
 
 
     }
