@@ -1,5 +1,6 @@
 import axios from "axios";
 import { timeUtils } from '../mixins/timeUtils'
+import moment from 'moment'
 
 
 export const apiCalls = {
@@ -7,7 +8,6 @@ export const apiCalls = {
     data: () => ({
     }),
     created: function () {
-        console.log("Im in the Mixin")
     },
 
     methods: {
@@ -42,6 +42,33 @@ export const apiCalls = {
                 })
         },
 
+        getTodayHeartRate: function (token) {
+            axios({
+                headers: {
+                    Authorization: 'Bearer ' + token //the token is a variable which holds the token
+                }, method: 'post', url: 'https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate', data: {
+                    "aggregateBy": [{
+                        "dataTypeName": "com.google.heart_rate.bpm",
+                        "dataSourceId": "derived:com.google.heart_rate.bpm:com.google.android.gms:merge_heart_rate_bpm"
+                    }],
+                    "bucketByTime": {"durationMillis": 3600000},//1 hour
+                    "startTimeMillis": this.getStartOfDayMillis(),
+                    "endTimeMillis": new Date().getTime()
+                }
+            }).then(response => {
+                    var averageHeartRateDataByHour = {}
+                    for (var i = 0; i <= response.data.bucket.length - 1; i++) {
+                        var hourData = response.data.bucket[i].dataset[0].point[0]
+                        if (hourData != undefined) {
+                            averageHeartRateDataByHour[moment(hourData.startTimeNanos / 1000000).format("YYYY-MM-DDTHH:mm:ss")] = Math.round(hourData.value[0].fpVal)
+                        }
+                    }
+                    this.$store.commit('setAverageHeartRateDataByHour', averageHeartRateDataByHour)
+                },
+                error => {
+                    console.log(error);
+                })
+        },
 
 
     }

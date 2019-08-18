@@ -1,7 +1,6 @@
 export const timeUtils = {
     data: () => ({}),
     created: function () {
-        console.log("Im in the timeUtils Mixin")
     },
     methods: {
         getWeekDaysArray: function () {
