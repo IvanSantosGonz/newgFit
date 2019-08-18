@@ -198,20 +198,20 @@
         methods: {
             setLast7Days: function () {
                 var weekdays = new Array(7);
-                weekday[0] = "Su";
-                weekday[1] = "M";
-                weekday[2] = "Tu";
-                weekday[3] = "W";
-                weekday[4] = "Th";
-                weekday[5] = "F";
-                weekday[6] = "Sa";
+                weekdays[0] = "Su";
+                weekdays[1] = "M";
+                weekdays[2] = "Tu";
+                weekdays[3] = "W";
+                weekdays[4] = "Th";
+                weekdays[5] = "F";
+                weekdays[6] = "Sa";
                 var days = [];
 
                 var j = 0
                 for (var i = 6; i >= 0; i--) {
                     var date = new Date()
                     date.setDate(date.getDate() - i )
-                    days[j] = weekday[date.getDay()]
+                    days[j] = weekdays[date.getDay()]
                     j++;
                 }
                 console.log("days", days);
