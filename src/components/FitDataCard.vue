@@ -135,7 +135,8 @@
 
             var keys = Object.keys(this.$store.getters.stepsLast7Days)
             this.days = keys
-            this.selection = keys[keys.length - 1]
+            this.selection = this.days[this.days.length - 1]
+            console.log(keys)
         }
     }
 

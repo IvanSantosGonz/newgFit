@@ -47,7 +47,7 @@
 
         },
         created() {
-            this.getTodayHeartRate(this.$store.getters.authToken)
+            this.getHeartRateByDate(this.$store.getters.authToken, new Date())
             this.get7DaysSteps(this.$store.getters.authToken)
         },
 

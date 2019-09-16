@@ -14,11 +14,24 @@ export const timeUtils = {
             weekDays[6] = "Sa";
             return weekDays
         },
-        getStartOfDayMillis() {
+        getTodayStartOfDayMillis() {
             var now = new Date();
             now.setUTCHours(0, 0, 0, 0);
             return now.getTime()
         },
+
+        getStartOfDayMillis(date) {
+            date.setUTCHours(0, 0, 0, 0);
+            return date.getTime()
+        },
+
+
+        getEndOfDayMillis(date) {
+            date.setUTCHours(23, 59, 59, 0);
+            return date.getTime()
+        },
+
+
         get7DaysBeforeTodayMillis() {
             var now = new Date();
             now.setDate(now.getDate() - 6)

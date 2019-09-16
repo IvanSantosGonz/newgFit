@@ -47,7 +47,7 @@
                             center-active
                     >
 
-                        <v-chip v-for="day in days" :key="day" :value="day">
+                        <v-chip v-for="day in Object.keys(days)" :key="day" :value="day">
                             {{ day }}
                         </v-chip>
                     </v-chip-group>
@@ -155,8 +155,6 @@
         }),
 
         computed: {
-
-
             setData: function () {
                 if (this.type == "heartRate") {
                     var keys = Object.keys(this.$store.getters.averageHeartRateDataByHour)
@@ -200,12 +198,12 @@
         methods: {
             setLast7Days: function () {
                 var weekDays = this.getWeekDaysArray()
-                var days = []
+                var days = {}
                 var j = 0
                 for (var i = 6; i >= 0; i--) {
                     var date = new Date()
                     date.setDate(date.getDate() - i )
-                    days[j] = weekDays[date.getDay()]
+                    days[weekDays[date.getDay()]] = date
                     j++;
                 }
                 return days;
@@ -214,6 +212,8 @@
         mounted: function () {
             this.setData
             this.days = this.setLast7Days();
+            this.selection = this.days[this.days.length - 1]
+
 
         }
     }
