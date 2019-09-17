@@ -57,18 +57,26 @@
 
             <v-divider class="my-2"></v-divider>
 
-            <v-btn @click.stop="dialog = true" class="ma-2" tile outlined color="teal">
-                <v-icon left>mdi-timetable</v-icon>
-                History
-            </v-btn>
+
         </v-card-text>
 
-        <v-dialog
-                v-model="dialog"
+        <v-menu
+                v-model="menu1"
+                :close-on-content-click="false"
+                full-width
                 max-width="290"
         >
-            <v-date-picker v-model="picker"></v-date-picker>
-        </v-dialog>
+            <template v-slot:activator="{ on }">
+                <v-btn  v-on="on" @click.stop="dialog = true" class="ma-2" tile outlined color="teal">
+                    <v-icon left>mdi-timetable</v-icon>
+                    History
+                </v-btn>
+            </template>
+            <v-date-picker
+                    v-model="date"
+                    @change="getHistoryHeartRateData"
+            ></v-date-picker>
+        </v-menu>
 
 
     </v-card>
@@ -96,7 +104,9 @@
         },
         data: () => ({
             dialog: false,
-            picker: new Date().toISOString().substr(0, 10),
+            date: new Date().toISOString().substr(0, 10),
+            menu1: false,
+            menu2: false,
             title: "BPM",
             subtitle1Name: "Max DPI",
             subtitle1Value: "70",
@@ -169,7 +179,9 @@
                 {},
         }),
 
-        computed: {},
+        computed: {
+
+        },
         methods: {
             setLast7Days: function () {
                 let weekDays = this.getWeekDaysArray();
@@ -184,6 +196,15 @@
                 this.getHeartRateByDate(this.$store.getters.authToken, this.days[day])
                     .then(averageHeartRateDataByHour => {
                             this.setData(averageHeartRateDataByHour)
+                        }
+                    );
+            },
+            getHistoryHeartRateData: function (date) {
+                this.menu1 = false;
+                console.log(date);
+                this.getHeartRateByDate(this.$store.getters.authToken, new Date(date))
+                    .then(averageHeartRateDataByHour => {
+                            this.setData(averageHeartRateDataByHour);
                         }
                     );
             },
