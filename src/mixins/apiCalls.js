@@ -71,7 +71,7 @@ export const apiCalls = {
         },
 
         getHeartRateByDate: function (token, date) {
-            axios({
+            return  axios({
                 headers: {
                     Authorization: 'Bearer ' + token //the token is a variable which holds the token
                 }, method: 'post', url: 'https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate', data: {
@@ -91,7 +91,7 @@ export const apiCalls = {
                             averageHeartRateDataByHour[moment(hourData.startTimeNanos / 1000000).format("YYYY-MM-DDTHH:mm:ss")] = Math.round(hourData.value[0].fpVal)
                         }
                     }
-                    this.$store.commit('setAverageHeartRateDataByHour', averageHeartRateDataByHour)
+                    return averageHeartRateDataByHour
                 },
                 error => {
                     console.log(error);

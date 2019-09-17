@@ -47,7 +47,7 @@
                             center-active
                     >
 
-                        <v-chip v-for="day in Object.keys(days)" :key="day" :value="day">
+                        <v-chip @click="clicked(day)" v-for="day in Object.keys(days)" :key="day" :value="day">
                             {{ day }}
                         </v-chip>
                     </v-chip-group>
@@ -69,11 +69,13 @@
 
 <script>
     import VueApexCharts from 'vue-apexcharts'
-    import { timeUtils } from '../mixins/timeUtils'
+    import {timeUtils} from '../mixins/timeUtils'
+    import {apiCalls} from '../mixins/apiCalls'
+
 
     export default {
         name: 'barDataCard',
-        mixins: [timeUtils],
+        mixins: [timeUtils, apiCalls],
         components: {
             "apexchart": VueApexCharts
         },
@@ -150,20 +152,39 @@
             },
             selection: 'Su',
             days:
-                [
-                ],
+                {},
         }),
 
-        computed: {
-            setData: function () {
+        computed: {},
+        methods: {
+            setLast7Days: function () {
+                var weekDays = this.getWeekDaysArray()
+                var j = 0
+                for (var i = 6; i >= 0; i--) {
+                    var date = new Date()
+                    date.setDate(date.getDate() - i)
+                    this.days[weekDays[date.getDay()]] = date
+                    j++;
+                }
+                return this.days;
+            },
+            clicked: function (day) {
+                this.getHeartRateByDate(this.$store.getters.authToken, this.days[day])
+                    .then(averageHeartRateDataByHour => {
+                            this.setData(averageHeartRateDataByHour)
+                        }
+                    );
+            },
+            setData: function (averageHeartRateDataByHour) {
                 if (this.type == "heartRate") {
-                    var keys = Object.keys(this.$store.getters.averageHeartRateDataByHour)
-                    var values = Object.values(this.$store.getters.averageHeartRateDataByHour)
+
+                    var keys = Object.keys(averageHeartRateDataByHour)
+                    var values = Object.values(averageHeartRateDataByHour)
 
 
                     this.categories = keys
-                    console.log("cats ", this.categories)
-                    console.log("series ", values)
+                    //console.log("cats ", this.categories)
+                    //console.log("series ", values)
 
 
                     this.title = "Heart Rate Registrations"
@@ -195,25 +216,16 @@
             }
 
         },
-        methods: {
-            setLast7Days: function () {
-                var weekDays = this.getWeekDaysArray()
-                var days = {}
-                var j = 0
-                for (var i = 6; i >= 0; i--) {
-                    var date = new Date()
-                    date.setDate(date.getDate() - i )
-                    days[weekDays[date.getDay()]] = date
-                    j++;
-                }
-                return days;
-            }
-        },
         mounted: function () {
-            this.setData
             this.days = this.setLast7Days();
-            this.selection = this.days[this.days.length - 1]
+            let daysKeys = Object.keys(this.days);
+            this.selection = daysKeys[daysKeys.length - 1];
 
+            this.getHeartRateByDate(this.$store.getters.authToken, this.days[this.selection])
+                .then(averageHeartRateDataByHour => {
+                        this.setData(averageHeartRateDataByHour)
+                    }
+                );
 
         }
     }
