@@ -57,13 +57,25 @@
 
             <v-divider class="my-2"></v-divider>
 
-            <v-btn class="ma-2" tile outlined color="teal">
+            <v-btn @click.stop="dialog = true" class="ma-2" tile outlined color="teal">
                 <v-icon left>mdi-timetable</v-icon>
                 History
             </v-btn>
         </v-card-text>
 
+        <v-dialog
+                v-model="dialog"
+                max-width="290"
+        >
+            <v-date-picker v-model="picker"></v-date-picker>
+        </v-dialog>
+
+
     </v-card>
+
+
+
+
 </template>
 
 
@@ -83,6 +95,8 @@
             type: String
         },
         data: () => ({
+            dialog: false,
+            picker: new Date().toISOString().substr(0, 10),
             title: "BPM",
             subtitle1Name: "Max DPI",
             subtitle1Value: "70",
