@@ -28,7 +28,7 @@
                 </v-layout>
                 <v-layout align-center justify-center>
                     <v-flex xs6 sm6 md6 lg6 xl6>
-                        <div class="title font-weight-light grey--text">{{subtitle1Name}} <br> {{setData}}</div>
+                        <div class="title font-weight-light grey--text">{{subtitle1Name}} <br> {{subtitle1Value}}</div>
                     </v-flex>
                     <v-flex xs6 sm6 md6 lg6 xl6>
                         <div class="title font-weight-light grey--text">{{subtitle2Name}} <br> {{subtitle2Value}}</div>
@@ -80,7 +80,7 @@
             "apexchart": VueApexCharts
         },
         props: {
-            type: ""
+            type: String
         },
         data: () => ({
             title: "BPM",
@@ -158,13 +158,11 @@
         computed: {},
         methods: {
             setLast7Days: function () {
-                var weekDays = this.getWeekDaysArray()
-                var j = 0
-                for (var i = 6; i >= 0; i--) {
-                    var date = new Date()
-                    date.setDate(date.getDate() - i)
+                let weekDays = this.getWeekDaysArray();
+                for (let i = 6; i >= 0; i--) {
+                    let date = new Date();
+                    date.setDate(date.getDate() - i);
                     this.days[weekDays[date.getDay()]] = date
-                    j++;
                 }
                 return this.days;
             },
@@ -177,21 +175,15 @@
             },
             setData: function (averageHeartRateDataByHour) {
                 if (this.type == "heartRate") {
+                    let keys = Object.keys(averageHeartRateDataByHour);
+                    let values = Object.values(averageHeartRateDataByHour);
 
-                    var keys = Object.keys(averageHeartRateDataByHour)
-                    var values = Object.values(averageHeartRateDataByHour)
-
-
-                    this.categories = keys
+                    this.categories = keys;
                     //console.log("cats ", this.categories)
                     //console.log("series ", values)
 
-
-                    this.title = "Heart Rate Registrations"
-                    this.subtitle1Name = "Max BPM"
-                    this.subtitle1Value = "180"
-                    this.subtitle2Name = "Min BPM"
-                    this.subtitle2Value = "45"
+                    this.subtitle1Value = Math.max(...values);
+                    this.subtitle2Value = Math.min(...values);
 
                     this.chartOptions = {
                         ...this.chartOptions,
@@ -201,18 +193,14 @@
                                 categories: keys,
                             }
                         }
-                    }
+                    };
                     this.series = [
                         {
                             name: "Average Heart Rate",
                             data: values
                         }
                     ];
-
-
                 }
-
-                return Math.max(...values);
             }
 
         },
