@@ -201,7 +201,6 @@
             },
             getHistoryHeartRateData: function (date) {
                 this.menu1 = false;
-                console.log(date);
                 this.getHeartRateByDate(this.$store.getters.authToken, new Date(date))
                     .then(averageHeartRateDataByHour => {
                             this.setData(averageHeartRateDataByHour);
