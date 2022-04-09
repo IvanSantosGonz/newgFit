@@ -13,7 +13,7 @@
     "core-js": "^2.6.5",
     "firebase": "^6.2.4",
     "firebaseui": "^4.1.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "roboto-fontface": "*",
     "vue": "^2.6.10",
     "vue-apexcharts": "^1.4.0",
